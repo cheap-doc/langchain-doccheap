@@ -26,6 +26,17 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      # The tools depend on the doc-cheap client. Install it from PyPI when a
+      # release in the declared range exists; before the client's first
+      # release (and if PyPI lags behind a new client), install it from the
+      # client's public source instead, so this repository's CI checks the
+      # tools rather than the state of PyPI. Once the client is on PyPI the
+      # first command always wins and CI runs against the published client.
+      - name: Install the doc-cheap client
+        run: |
+          python -m pip install 'doc-cheap>=0.1.0,<1' \
+            || python -m pip install 'doc-cheap @ git+https://github.com/cheap-doc/doc-cheap-python@main'
+
       - name: Install the package with its development tools
         run: python -m pip install -e '.[dev]'
 
