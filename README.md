@@ -66,7 +66,8 @@ results.
   [doc.cheap cabinet](https://doc.cheap/docs/concepts/api-keys-and-sessions).
 - **Sandbox key** – `sk_sandbox_public` works without an account. It gives 10
   free recognised documents per address in all, and at most 10 requests per
-  address an hour, whatever their answer.
+  address an hour, whatever their answer. Use test images only, never a real
+  document: it keeps a record of every scan for one year.
 
 Without `api_key` the tools read the key from the `DOC_CHEAP_API_KEY`
 environment variable. `base_url` (or `DOC_CHEAP_API_BASE`) points them at
@@ -74,8 +75,10 @@ another address. To control timeouts, proxies or connection pooling, build a
 `doc_cheap.Client` yourself and pass it as `client=`; the tools leave it open.
 
 **Stored results.** A result is stored only when the scan was made with a live
-key under a non-zero retention window. Under the sandbox key nothing is stored,
-so getting or deleting a scan answers `scan_not_found`.
+key under a non-zero retention window. Under a sandbox key nothing can be read
+back: an account's own sandbox key stores nothing, and the public key
+`sk_sandbox_public` keeps every scan for one year, with a reduced thumbnail and the
+address it came from, where that key cannot reach it. So getting or deleting a scan answers `scan_not_found`.
 
 ## Resources
 
